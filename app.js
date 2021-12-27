@@ -7,9 +7,11 @@ const mongo = require("./shared/mongo");
 
 require("dotenv").config();
 
-const app=express();
 
-var PORT = process.env.PORT;
+
+const Port = process.env.PORT || 3001;
+
+const app=express();
 
 app.use(cors());
 
@@ -21,7 +23,7 @@ app.use(cors());
         app.use(authentication);
         app.use(logging);
         app.use("/event",eventRoutes);
-        app.listen(PORT, ()=>{ console.log("Server running at port",PORT)});
+        app.listen(Port, ()=> console.log("Server running at port",Port));
     }catch(err){
         console.log("Server starting error",err);
     }
