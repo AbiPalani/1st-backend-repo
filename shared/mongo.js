@@ -1,7 +1,10 @@
-const {MongoClient} = require("mongodb");
-const URL = "mongodb+srv:mongodb+srv://diary_user:diary123@cluster0.tyua0.mongodb.net/diary?retryWrites=true&w=majority";
+const MongoClient = require("mongodb").MongoClient;
 
-const client = new MongoClient(URL);
+const URI = "mongodb+srv://diary_user:diary123@cluster0.tyua0.mongodb.net";
+const client = new MongoClient(URI,{
+  useNewUrlParser:true,
+  useUnifiedTopology:true,
+});
 
 module.exports ={
   //complete conection
@@ -14,7 +17,7 @@ module.exports ={
      async connect(){
       //connection to database
      await client.connect();
-     this.db=client.db("diary");
+     this.db=client.db(process.env.DB_Name);
      this.events = this.db.collection("events");
      this.users = this.db.collection("users");
   },

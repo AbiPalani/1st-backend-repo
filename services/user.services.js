@@ -20,10 +20,9 @@ const user_service ={
             
             const saltRounds= 10;            
             const salt = await bcrypt.genSalt(saltRounds);
-            const newPass = await bcrypt.hash(value.password,salt);
-            req.body.password = newPass;
+            req.body.password = await bcrypt.hash(req.body.password,salt);
 
-            await db.users.insertOne(...req.body);
+            await db.users.insertOne(req.body);
             res.send({message:"user register successfully"});     
         }catch(err){
             console.log("Error Reading Data-",err);

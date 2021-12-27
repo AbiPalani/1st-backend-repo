@@ -1,5 +1,5 @@
 const express = require("express");
-const {authentication,logging}=require("./shared/middleware")
+const {authentication ,logging}=require("./shared/middleware")
 const cors = require("cors");
 const eventRoutes = require("./routes/event.route");
 const userRoutes = require("./routes/user.route");
@@ -9,12 +9,13 @@ require("dotenv").config();
 
 const app=express();
 
-var PORT = process.env.PORT || 3001;
+var PORT = process.env.PORT;
+
+app.use(cors());
 
 (async()=>{
     try{
         await mongo.connect();
-        app.use(cors());
         app.use(express.json());
         app.use("/users",userRoutes);
         app.use(authentication);
