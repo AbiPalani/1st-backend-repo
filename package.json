@@ -19,6 +19,7 @@
     "joi": "^17.5.0",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.1.3",
+    "node":"^14.17.6",
     "nodemon": "^2.0.15",
     "routes": "^2.1.0",
     "url-parse": "^1.5.3"
