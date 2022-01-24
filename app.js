@@ -4,7 +4,7 @@ const app = express();
 const cors = require("cors");
 const userRoutes = require("./routes/user.route");
 const eventRoutes = require("./routes/event.route");
-const { authentication } = require("./services/verifaication.services");
+const { authentication } = require("./services/verification.services");
 require("dotenv").config();
 
 const PORT = process.env.PORT || 3001;

@@ -2,7 +2,7 @@ const event_route = require("express").Router();
 const eventService = require("../services/event.services");
 const {
     authentication
-  } = require("../services/verifaication.services");
+  } = require("../services/verification.services");
 
 event_route.get("/",authentication,eventService.findEvent);
 event_route.post("/",authentication,eventService.insertEvent);
