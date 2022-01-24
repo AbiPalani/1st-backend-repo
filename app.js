@@ -1,30 +1,26 @@
 const express = require("express");
-const {authentication ,logging}=require("./shared/middleware")
+const mongodb = require("./shared/mongo");
+const app = express();
 const cors = require("cors");
-const eventRoutes = require("./routes/event.route");
 const userRoutes = require("./routes/user.route");
-const mongo = require("./shared/mongo");
-
+const eventRoutes = require("./routes/event.route");
+const { authentication } = require("./services/verifaication.services");
 require("dotenv").config();
 
+const PORT = process.env.PORT || 3001;
 
-
-const Port = process.env.PORT || 3001;
-
-const app=express();
-
-app.use(cors());
-
-(async()=>{
-    try{
-        await mongo.connect();
-        app.use(express.json());
-        app.use("/users",userRoutes);
-        app.use(authentication);
-        app.use(logging);
-        app.use("/event",eventRoutes);
-        app.listen(Port, ()=> console.log("Server running at port",Port));
-    }catch(err){
-        console.log("Server starting error",err);
-    }
+(async () => {
+  try {
+    await mongodb.connect();
+    app.use(cors());
+    app.use(express.json());
+    app.use("/users", userRoutes);
+    app.use(authentication);
+    app.use("/events", eventRoutes);
+    app.listen(PORT, () => {
+      console.log("Server running in PORT", PORT);
+    });
+  } catch (err) {
+    console.log(err);
+  }
 })();

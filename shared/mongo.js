@@ -1,10 +1,7 @@
 const MongoClient = require("mongodb").MongoClient;
 
 const URI = "mongodb+srv://diary_user:diary123@cluster0.tyua0.mongodb.net";
-const client = new MongoClient(URI,{
-  useNewUrlParser:true,
-  useUnifiedTopology:true,
-});
+const client = new MongoClient(URI);
 
 module.exports ={
   //complete conection
@@ -22,5 +19,6 @@ module.exports ={
      this.users = this.db.collection("users");
   },
 };
+
 
 

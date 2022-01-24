@@ -39,7 +39,6 @@ const user_service ={
                 message:error.details[0].message,
             });
 
-
             const user = await db.users.findOne({email:value.email});
             if(!user) return res.status(400).send({error:"user doesn't exist"});
 
@@ -59,6 +58,7 @@ const user_service ={
             res.sendStatus(500);
         }
     },
+
 
 };
 module.exports = user_service;
