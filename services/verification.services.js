@@ -1,6 +1,13 @@
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = "diary21232@123";
 
+function ignoreFavicon(req, res, next) {
+  if (req.originalUrl.includes('favicon.ico')) {
+    res.status(204).end()
+  }
+  next();
+}
+
 function authentication(req, res, next) {
   const authHeader = req.headers.token;
   if (!authHeader) return res.status(401).send("You are NOT Authenticated");
@@ -13,5 +20,6 @@ function authentication(req, res, next) {
 }
 
 module.exports = {
-  authentication
+  authentication,
+  ignoreFavicon
 };
