@@ -15,13 +15,15 @@ const user_service ={
                 message:error.details[0].message,
             });
 
-            const user = await db.users.findOne({email:req.body.email});
+             const user = await db.users.findOne({email:req.body.email});
             if(user) return res.status(400).send({error:"user already exist"});
-                        
-            const salt = await bcrypt.genSalt();
+            
+            const saltRounds= 10;            
+            const salt = await bcrypt.genSalt(saltRounds);
             req.body.password = await bcrypt.hash(req.body.password,salt);
 
-            await db.users.insertOne(req.body);   
+            await db.users.insertOne(req.body);
+            res.send({message:"user register successfully"});     
         }catch(err){
             console.log("Error Reading Data-",err);
             res.sendStatus(500);
@@ -37,20 +39,23 @@ const user_service ={
                 message:error.details[0].message,
             });
 
-            const user = await db.users.findOne({email:value.email});
-            if(!user) return res.status(400).send({error:"user doesn't exist"});
+            const user = await db.users.findOne({email:req.body.email});
+            if(!user) 
+                return res.status(400).send({error:"user doesn't exist"});
 
-            const isValid = await bcrypt.compare(value.password,user.password);
+            const isValid = await bcrypt.compare(req.body.password,user.password);
             
-            if(!isValid) return res.status(401).send({error:"password did not match"});
-
-            const authtoken = jwt.sign({ 
-                userId:user._id },
-                 JWT_SECRET,
-                {expiresIn:"8h"}
-            );
-
-            res.send({authtoken});            
+            if(!isValid) 
+                return res.status(401).send({error:"password did not match"});
+            
+                const authtoken = jwt.sign({ 
+                    userId:user._id },
+                     JWT_SECRET,
+                    {expiresIn:"8h"}
+                );
+    
+                res.send({authtoken}); 
+            res.send({message:"User logged in successfully"})
         }catch (err){
             console.log("Error Inserting Data",err);
             res.sendStatus(500);

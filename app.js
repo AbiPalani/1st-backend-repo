@@ -1,26 +1,32 @@
 const express = require("express");
-const mongodb = require("./shared/mongo");
-const app = express();
+const {ignoreFavicon,authentication ,logging}=require("./shared/middleware")
 const cors = require("cors");
 const userRoutes = require("./routes/user.route");
-const eventRoutes = require("./routes/event.route");
-const { ignoreFavicon} = require("./services/verification.services");
+const eventsRoutes = require("./routes/event.route")
+const mongo = require("./shared/mongo");
 require("dotenv").config();
 
-const PORT = process.env.PORT || 3001;
 
-(async () => {
-  try {
-    await mongodb.connect();
-    app.use(ignoreFavicon);
-    app.use(cors());
-    app.use(express.json());
-    app.use("/users", userRoutes);
-    app.use("/events", eventRoutes);
-    app.listen(PORT, () => {
-      console.log("Server running in PORT", PORT);
-    });
-  } catch (err) {
-    console.log(err);
-  }
+const Port = process.env.PORT || 3001;
+
+const app=express();
+
+(async()=>{
+    try{
+        await mongo.connect();
+        app.use(ignoreFavicon);
+        app.use(cors());
+        app.use(express.json());
+        app.get('/', function(req, res) {
+          res.status(200).send("Welcome");
+        });
+        
+        app.use("/users",userRoutes);
+        app.use(authentication);
+        app.use(logging);
+        app.use("/events",eventsRoutes);
+        app.listen(Port, ()=> console.log("Server running at port",Port));
+    }catch(err){
+        console.log("Server starting error",err);
+    }
 })();
