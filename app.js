@@ -15,6 +15,10 @@ const PORT = process.env.PORT || 3001;
     app.use(ignoreFavicon);
     app.use(cors());
     app.use(express.json());
+    app.use("/",(res,req)=>{
+      res.status(200).send("Home page");
+      next();
+    })
     app.use("/users", userRoutes);
     app.use(authentication);
     app.use("/events", eventRoutes);
