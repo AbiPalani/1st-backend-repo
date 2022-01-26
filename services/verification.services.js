@@ -9,17 +9,14 @@ function ignoreFavicon(req, res, next) {
 }
 
 function authentication(req, res, next) {
-  const token = req.headers["auth-token"];
-  if(token){
-    try{
-      req.user = jwt.verify(token,JWT_SECRET);
-      next();
-    }catch(err){
-      res.sendStatus(401);
-    }
-  }else{
-    res.sendStatus(401);
-  }
+  const authHeader = req.headers.token;
+  if (!authHeader) return res.status(401).send("You are NOT Authenticated");
+  const token = authHeader;
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) return res.status(403).send("Token is not Valid");
+    req.user = user;
+    next();
+  });
 }
 
 module.exports = {

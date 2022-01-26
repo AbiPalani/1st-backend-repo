@@ -17,13 +17,11 @@ const user_service ={
 
             const user = await db.users.findOne({email:req.body.email});
             if(user) return res.status(400).send({error:"user already exist"});
-            
-            const saltRounds= 10;            
-            const salt = await bcrypt.genSalt(saltRounds);
+                        
+            const salt = await bcrypt.genSalt();
             req.body.password = await bcrypt.hash(req.body.password,salt);
 
-            await db.users.insertOne(req.body);
-            res.send({message:"user register successfully"});     
+            await db.users.insertOne(req.body);   
         }catch(err){
             console.log("Error Reading Data-",err);
             res.sendStatus(500);
