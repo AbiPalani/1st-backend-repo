@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3001;
 (async () => {
   try {
     await mongodb.connect();
-    app.use(cors({origin:"https://kind-heyrovsky-9752ea.netlify.app/"}));
+    app.use(cors());
     app.use(express.json());
     app.use("/users", userRoutes);
     app.use(authentication);
