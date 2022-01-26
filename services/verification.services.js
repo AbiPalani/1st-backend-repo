@@ -8,7 +8,7 @@ function ignoreFavicon(req, res, next) {
   next();
 }
 
-/*function authentication(req, res, next) {
+function authentication(req, res, next) {
   const authHeader = req.headers.token;
   if (!authHeader) return res.status(401).send("You are NOT Authenticated");
   const token = authHeader;
@@ -17,9 +17,9 @@ function ignoreFavicon(req, res, next) {
     req.user = user;
     next();
   });
-}*/
+}
 
 module.exports = {
-  //authentication,
+  authentication,
   ignoreFavicon
 };
