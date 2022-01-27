@@ -15,7 +15,7 @@ const app=express();
     try{
         await mongo.connect();
         app.use(ignoreFavicon);
-        app.use(cors({origin:"https://kind-heyrovsky-9752ea.netlify.app/"}));
+        app.use("*",cors());
         app.use(express.json());
         app.get('/', function(req, res) {
           res.status(200).send("Welcome");
