@@ -8,21 +8,21 @@ const user_service ={
     
     async register(req,res,next) {
         try{
-            const {error,value} = registerSchema.validate(req.body);
+            const {error,value} = await registerSchema.validate(req.body);
             if(error)
             return res.status(400).send({
                 error:"Validation Failed",
                 message:error.details[0].message,
             });
 
-            const user =  db.users.findOne({email:req.body.email});
+            const user =  await db.users.findOne({email:value.email});
             if(user) return res.status(400).send({error:"user already exist"});
             console.log(user);
-            const salt =  bcrypt.genSalt();
-            req.body.password =  bcrypt.hash(req.body.password,salt);
+            const salt = await bcrypt.genSalt();
+            req.body.password = await bcrypt.hash(value.password,salt);
             console.log(salt);
-            await db.users.insertOne(req.body);
-            console.log(req.body);
+            await db.users.insertOne(value);
+            console.log(value);
             res.send({message:"user register successfully"});    
         }catch(err){
             console.log("Error Registering Data-",err);
@@ -39,11 +39,11 @@ const user_service ={
                 message:error.details[0].message,
             });
 
-            const user = await db.users.findOne({email:req.body.email});
+            const user = await db.users.findOne({email:value.email});
             if(!user) 
                 return res.status(400).send({error:"user doesn't exist"});
 
-            const isValid = await bcrypt.compare(req.body.password,user.password);
+            const isValid = await bcrypt.compare(value.password,user.password);
             
             if(!isValid) 
                 return res.status(401).send({error:"password did not match"});
@@ -53,9 +53,7 @@ const user_service ={
                      JWT_SECRET,
                     {expiresIn:"8h"}
                 );
-    
                 res.send({authtoken}); 
-            res.send({message:"User logged in successfully"});
         }catch (err){
             console.log("Error Inserting Data",err);
             res.sendStatus(500);
