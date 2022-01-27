@@ -23,8 +23,7 @@ const user_service ={
             console.log(salt);
             await db.users.insertOne(req.body);
             console.log(req.body);
-            res.send({message:"user register successfully"});  
-            next();   
+            res.send({message:"user register successfully"});    
         }catch(err){
             console.log("Error Registering Data-",err);
             res.sendStatus(500);
@@ -57,11 +56,9 @@ const user_service ={
     
                 res.send({authtoken}); 
             res.send({message:"User logged in successfully"});
-            next();
         }catch (err){
             console.log("Error Inserting Data",err);
             res.sendStatus(500);
-            res.next();
         }
     },
 

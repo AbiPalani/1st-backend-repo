@@ -15,7 +15,7 @@ const app=express();
     try{
         await mongo.connect();
         app.use(ignoreFavicon);
-        app.use(cors()); // <---- use cors middleware
+        app.use(cors());
         app.use(express.json());    
         app.use("/users",userRoutes);
         app.use(authentication);
