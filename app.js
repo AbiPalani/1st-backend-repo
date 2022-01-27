@@ -15,16 +15,18 @@ const app=express();
     try{
         await mongo.connect();
         app.use(ignoreFavicon);
-        app.use("*",cors());
-        app.use(express.json());
-        app.get('/', function(req, res) {
-          res.status(200).send("Welcome");
-        });
-        
-        app.use("/users",userRoutes);
+        var corsOptions = {
+            origin:"*"
+          }
+          
+          app.get('/', cors(corsOptions), function (req, res, next) {
+            res.status(200).send("Welcome");
+          })
+        app.use(express.json());     
+        app.use("/users", cors(corsOptions),userRoutes);
         app.use(authentication);
         app.use(logging);
-        app.use("/events",eventsRoutes);
+        app.use("/events", cors(corsOptions),eventsRoutes);
         app.listen(Port, ()=> console.log("Server running at port",Port));
     }catch(err){
         console.log("Server starting error",err);
