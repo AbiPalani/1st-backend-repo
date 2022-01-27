@@ -6,26 +6,26 @@ const JWT_SECRET = "diary21232@123";
 
 const user_service ={
     
-    async register(req,res) {
+    async register(req,res,next) {
         try{
-            const {error,value} = await registerSchema.validate(req.body);
+            const {error,value} = registerSchema.validate(req.body);
             if(error)
             return res.status(400).send({
                 error:"Validation Failed",
                 message:error.details[0].message,
             });
 
-             const user = await db.users.findOne({email:req.body.email});
+            const user =  db.users.findOne({email:req.body.email});
             if(user) return res.status(400).send({error:"user already exist"});
-            
-            const saltRounds= 10;            
-            const salt = await bcrypt.genSalt(saltRounds);
-            req.body.password = await bcrypt.hash(req.body.password,salt);
-
+            console.log(user);
+            const salt =  bcrypt.genSalt();
+            req.body.password =  bcrypt.hash(req.body.password,salt);
+            console.log(salt);
             await db.users.insertOne(req.body);
+            console.log(req.body);
             res.send({message:"user register successfully"});     
         }catch(err){
-            console.log("Error Reading Data-",err);
+            console.log("Error Registering Data-",err);
             res.sendStatus(500);
         }
     },
@@ -59,6 +59,7 @@ const user_service ={
         }catch (err){
             console.log("Error Inserting Data",err);
             res.sendStatus(500);
+            res.next();
         }
     },
 
