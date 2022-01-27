@@ -25,10 +25,10 @@ const app=express();
 
         app.use(cors()); // <---- use cors middleware
         app.use(express.json());     
-        app.use("/users", cors(corsOptions),userRoutes);
+        app.use("/users",userRoutes);
         app.use(authentication);
         app.use(logging);
-        app.use("/events", cors(corsOptions),eventsRoutes);
+        app.use("/events",eventsRoutes);
         app.listen(Port, ()=> console.log("Server running at port",Port));
     }catch(err){
         console.log("Server starting error",err);
