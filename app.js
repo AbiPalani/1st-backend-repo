@@ -15,13 +15,12 @@ const app=express();
     try{
         await mongo.connect();
         app.use(ignoreFavicon);
-        var corsOptions = {
-            origin:"*"
-          }
-          
-          app.get('/', cors(corsOptions), function (req, res, next) {
-            res.status(200).send("Welcome");
-          })
+        const corsOptions =  function (req, res) {
+          res.setHeader("Access-Control-Allow-Origin", "*");
+          res.setHeader('Access-Control-Allow-Methods', '*');
+          res.setHeader("Access-Control-Allow-Headers", "*");
+          res.end();
+        };
         app.use(express.json());     
         app.use("/users", cors(corsOptions),userRoutes);
         app.use(authentication);
