@@ -23,14 +23,15 @@ const user_service ={
             console.log(salt);
             await db.users.insertOne(req.body);
             console.log(req.body);
-            res.send({message:"user register successfully"});     
+            res.send({message:"user register successfully"});  
+            next();   
         }catch(err){
             console.log("Error Registering Data-",err);
             res.sendStatus(500);
         }
     },
 
-    async login(req,res){
+    async login(req,res,next){
         try{
             const {error,value} = await loginSchema.validate(req.body);
             if(error)
@@ -55,7 +56,8 @@ const user_service ={
                 );
     
                 res.send({authtoken}); 
-            res.send({message:"User logged in successfully"})
+            res.send({message:"User logged in successfully"});
+            next();
         }catch (err){
             console.log("Error Inserting Data",err);
             res.sendStatus(500);
