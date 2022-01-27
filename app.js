@@ -16,11 +16,7 @@ const app=express();
         await mongo.connect();
         app.use(ignoreFavicon);
         app.use(cors()); // <---- use cors middleware
-        app.use(express.json());   
-        app.use("/",function(req,res,next){
-          res.status(200).send("Welcome");
-          next();
-        })  
+        app.use(express.json());    
         app.use("/users",userRoutes);
         app.use(authentication);
         app.use(logging);
