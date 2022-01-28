@@ -29,7 +29,7 @@ const app = express();
 
         // simple route
         app.get("/", (req, res) => {
-        res.send({ message: "Welcome to Diary application." });
+        res.send("Welcome to Diary application." );
         });
         app.use("/users",userRoutes);
         app.use(authentication);
