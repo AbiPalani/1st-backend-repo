@@ -24,7 +24,6 @@ function authentication(req,res,next){
 
 function logging(req,res,next){
   console.log(`[${new Date()} - ${req.user.userId} - ${req.url} - ${req.method}]`);
-  res.end();
 }
 
 module.exports = {

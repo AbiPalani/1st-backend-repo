@@ -5,8 +5,7 @@ const mongo = require("../shared/mongo");
 const event_service ={
     async findEvent(req,res){
         try{
-            const data=await mongo.events.find().toArray();
-                //{userId:req.user.userId}
+            const data=await mongo.events.find({userId:req.user.userId}).toArray();
             res.send(data);
         }catch(err){
             console.log("Error Reading Data-",err);
@@ -15,9 +14,7 @@ const event_service ={
     },
 async insertEvent(req,res){
     try{
-        const {_id} = await mongo.events.insertOne({...req.body});
-            //insertedId:} 
-            //userId:req.user.userId
+        const {insertedId:_id} = await mongo.events.insertOne({...req.body,userId:req.user.userId});
         res.send({...req.body,_id});
     }catch (err){
         console.log("Error Inserting Data",err);
@@ -28,8 +25,7 @@ async insertEvent(req,res){
 async updateEvent(req,res){
     try{
         const {value} =await mongo.events.findOneAndUpdate(
-            {_id:ObjectId(req.params.id)},
-                //userId:req.user,
+            {_id:ObjectId(req.params.id),userId:req.user},
             {$set:{...req.body}},
             );
             res.send(value);
@@ -40,8 +36,7 @@ async updateEvent(req,res){
 },
 async deleteEvent(req,res){
     try{
-        const event = await mongo.events.findOne({_id:ObjectId(req.params.id)});
-        //,userId:req.user.userId});
+        const event = await mongo.events.findOne({_id:ObjectId(req.params.id),userId:req.user.userId});
         if(!event) return res.status(401).send({error:"you can't access this event"});
 
         await mongo.events.deleteOne(
