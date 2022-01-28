@@ -17,13 +17,14 @@ const user_service ={
 
             const user =  await db.users.findOne({email:value.email});
             if(user) return res.status(400).send({error:"user already exist"});
-            console.log(user);
-            const salt = await bcrypt.genSalt();
-            req.body.password = await bcrypt.hash(value.password,salt);
+            const saltRounds = 10;
+            const salt = await bcrypt.genSalt(saltRounds);
+            value.password = await bcrypt.hashSync(value.password,salt);
             console.log(salt);
             await db.users.insertOne(value);
             console.log(value);
-            res.send({message:"user register successfully"});    
+            res.send({message:"user register successfully"}); 
+            next();   
         }catch(err){
             console.log("Error Registering Data-",err);
             res.sendStatus(500);
@@ -39,11 +40,12 @@ const user_service ={
                 message:error.details[0].message,
             });
 
-            const user = await db.users.findOne({email:value.email});
+            const user = await db.users.findOne({email:req.body.email});
+
             if(!user) 
                 return res.status(400).send({error:"user doesn't exist"});
 
-            const isValid = await bcrypt.compare(value.password,user.password);
+            const isValid = await bcrypt.compare(req.body.password,user.password);
             
             if(!isValid) 
                 return res.status(401).send({error:"password did not match"});
@@ -55,12 +57,9 @@ const user_service ={
                 );
                 res.send({authtoken}); 
         }catch (err){
-            console.log("Error Inserting Data",err);
+            console.log("Error in Logging",err);
             res.sendStatus(500);
         }
     },
-
-
 };
 module.exports = user_service;
-

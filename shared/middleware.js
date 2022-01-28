@@ -8,7 +8,7 @@ function ignoreFavicon(req, res, next) {
   next();
 }
 
-/*function authentication(req,res,next){
+function authentication(req,res,next){
   const authtoken = req.headers[{ "Content-type":"application/json" },{"auth-token":"JWT_SECRET"}];
   if(authtoken){
       try{
@@ -20,7 +20,7 @@ function ignoreFavicon(req, res, next) {
   }else{
       res.status(401);
   }
-}*/
+}
 
 function logging(req,res,next){
   console.log(`[${new Date()} - ${req.user.userId} - ${req.url} - ${req.method}]`);
@@ -28,7 +28,7 @@ function logging(req,res,next){
 }
 
 module.exports = {
-  //authentication,
+  authentication,
   ignoreFavicon,
   logging
 };

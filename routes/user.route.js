@@ -6,4 +6,3 @@ user_route.post("/login",userService.login);
 
 
 module.exports = user_route;
-
