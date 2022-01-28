@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = "diary21232@123";
 
 function ignoreFavicon(req, res, next) {
   if (req.originalUrl.includes('favicon.ico')) {
@@ -12,7 +11,7 @@ function authentication(req,res,next){
   const authtoken = req.headers[{ "Content-type":"application/json" },{"auth-token":"JWT_SECRET"}];
   if(authtoken){
       try{
-      req.user = jwt.verify(authtoken,JWT_SECRET);
+      req.user = jwt.verify(authtoken,process.env.JWT_SECRET);
       next();
       }catch(err){
        res.sendStatus(401);
