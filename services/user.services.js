@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const {registerSchema,loginSchema} = require("../shared/schema");
 const db = require("../shared/mongo");
-const JWT_SECRET = "diary21232@123";
+const JWT_SECRET = "diary21232";
 
 const user_service ={
     
@@ -50,12 +50,26 @@ const user_service ={
             if(!isValid) 
                 return res.status(401).send({error:"password did not match"});
             
-                const authtoken = jwt.sign({ 
+                const token = jwt.sign({ 
                     userId:user._id },
                      JWT_SECRET,
                     {expiresIn:"8h"}
                 );
-                res.send({authtoken}); 
+                const auth = res.header("x-auth-token",token)
+                .json({ token}); 
+                console.log(auth);
+                if(auth){
+                    try{
+                    req.user = jwt.verify(auth,JWT_SECRET);
+                    console.log(req.user);
+                    next();
+                    }catch(err){
+                     res.sendStatus(401);
+                    }
+                }else{
+                    res.status(401);
+                }
+
         }catch (err){
             console.log("Error in Logging",err);
             res.sendStatus(500);
