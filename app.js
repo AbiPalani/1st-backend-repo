@@ -1,5 +1,4 @@
 const express = require("express");
-const {ignoreFavicon,authentication,logging}=require("./shared/middleware")
 const cors = require("cors");
 const userRoutes = require("./routes/user.route");
 const eventsRoutes = require("./routes/event.route")
@@ -29,15 +28,13 @@ const app = express();
 
         // simple route
         app.get("/", (req, res) => {
-        res.send("Welcome to Diary application." );
+        res.send({ message: "Welcome to Diary application." });
         });
         app.use("/users",userRoutes);
-        app.use(authentication);
-        app.use(logging);
         app.use("/events",eventsRoutes);
             
         // set port, listen for requests
-        const PORT = process.env.PORT || 8001;
+        const PORT = 3001;
         app.listen(PORT, () => {
         console.log(`Server is running on port ${PORT}.`);
         });
