@@ -1,5 +1,4 @@
 const express = require("express");
-const {ignoreFavicon,authentication,logging}=require("./shared/middleware")
 const cors = require("cors");
 const userRoutes = require("./routes/user.route");
 const eventsRoutes = require("./routes/event.route")
