@@ -76,14 +76,5 @@ const user_service ={
         }
     },
 
-    async profile(req,res,next){
-        try{
-            const data=await mongo.users.findOne({_id:req.user._id}).toArray();
-            res.send(data);
-        }catch(err){
-            console.log("Error Reading Data-",err);
-            res.sendStatus(500);
-        }
-    },
 };
 module.exports = user_service;
